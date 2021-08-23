@@ -88,10 +88,24 @@ public class GenerateEnv {
                 createProfile(connection, p, profileConfig, certificates);
                 LOGGER.debug("Created profile for {} {}", p.firstName, p.lastName);
             }
+            insertSkillCategories(connection);
             connection.commit();
         }
         LOGGER.debug("вышли из main");
         LOGGER.info("Environment is ready");
+    }
+
+    private static void insertSkillCategories(Connection connection) throws SQLException {
+        int id =1;
+        Map<String, Set<String>> categories = createSkillMap();
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into skill_category values (?, ?)");
+        for (String category: categories.keySet() ){
+            preparedStatement.setLong(1,id++);
+            preparedStatement.setString(2, category);
+            preparedStatement.addBatch();
+        }
+        preparedStatement.executeBatch();
+        preparedStatement.close();
     }
 
     private static void clearMedia() throws IOException {

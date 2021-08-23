@@ -1,38 +1,49 @@
 package by.minsk.resume.configuration;
 
-import by.minsk.resume.controller.ProfileController;
-import by.minsk.resume.filter.ApplicationFilter;
-import by.minsk.resume.listener.ApplicationListener;
+import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.SessionTrackingMode;
+import java.util.EnumSet;
+
 import org.sitemesh.builder.SiteMeshFilterBuilder;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.*;
-import java.util.EnumSet;
+
+
+import by.minsk.resume.filter.ResumeFilter;
+import by.minsk.resume.listener.ApplicationListener;
+
+
+
 
 public class ResumeWebApplicationInitializer implements WebApplicationInitializer {
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException  {
+    public void onStartup(ServletContext servletContext) throws ServletException {
         WebApplicationContext context = createWebApplicationContext(servletContext);
-
 
         servletContext.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
         servletContext.addListener(new ContextLoaderListener(context));
         servletContext.addListener(context.getBean(ApplicationListener.class));
 
         registerFilters(servletContext, context);
-        registerServlet(servletContext, context.getBean(ProfileController.class), "/profile");
+        registerSpringMVCDispatcherServlet(servletContext,context);
     }
 
-    private void registerServlet(ServletContext context, Servlet servlet, String url) {
-        ServletRegistration.Dynamic servletRegistration = context.addServlet(servlet.getClass().getSimpleName(), servlet);
-        servletRegistration.setLoadOnStartup(1);
-        servletRegistration.addMapping(url);
+    private  void registerSpringMVCDispatcherServlet(ServletContext context, WebApplicationContext applicationContext){
+        ServletRegistration.Dynamic servlet = context.addServlet("dispatcher", new DispatcherServlet(applicationContext));
+        servlet.setLoadOnStartup(1);
+        servlet.addMapping("/");
     }
+
 
     private WebApplicationContext createWebApplicationContext(ServletContext context) {
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
@@ -48,8 +59,9 @@ public class ResumeWebApplicationInitializer implements WebApplicationInitialize
     }
 
     private void registerFilters(ServletContext context, WebApplicationContext applicationContext) {
+        registerFilter(context,new OpenEntityManagerInViewFilter());
+        registerFilter(context, applicationContext.getBean(ResumeFilter.class));  // change
         registerFilter(context, new CharacterEncodingFilter("UTF-8", true));
-        registerFilter(context, applicationContext.getBean(ApplicationFilter.class));
         registerFilter(context,buildConfigurableSiteMeshFilter(),"sitemesh");
     }
 
