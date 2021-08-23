@@ -115,8 +115,8 @@ public class GenerateEnv {
         }
         File file = new File(MEDIA_DIR);
         if (!file.exists()) {
-            file.mkdir();
-            LOGGER.debug("зашли в clearMedia создание папки");
+            if (!file.mkdir()) {LOGGER.debug("зашли в clearMedia не удалось создание папки");} else {
+            LOGGER.debug("зашли в clearMedia создание папки");}
         }
         LOGGER.debug("вышли из clearMedia");
         LOGGER.info("Media dir cleared");
