@@ -22,3 +22,8 @@
 /src/main/webapp/WEB-INF/lib/spring-web-4.2.5.RELEASE.jar
 /src/main/webapp/WEB-INF/lib/spring-webmvc-4.2.5.RELEASE.jar
 /src/main/webapp/WEB-INF/lib/thumbnailator-0.4.8.jar
+/src/main/webapp/media/avatar/
+/src/main/webapp/media/certificates/
+/.jpb/
+/.idea/
+/src/main/webapp/WEB-INF/lib/
