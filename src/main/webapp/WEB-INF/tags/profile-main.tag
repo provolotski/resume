@@ -1,26 +1,38 @@
-<%@ tag pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ tag pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 
 <div class="panel panel-primary">
     <a href="/edit">
-        <img img class="img-responsive photo"  src="/media/avatar/32b95e02-42d9-4933-94f5-af8c11ac510c.jpg" alt="photo"> </a>
+        <img img class="img-responsive photo" src="${profile.largePhoto}" alt="photo"> </a>
     <h1 class="text-center">
-        <a style="color: black;" href="/edit">${fullName}</a>
+        <a style="color: black;" href="/edit">${profile.fullName}</a>
     </h1>
     <h6 class="text-center">
-        <strong>Odessa, Ukraine</strong>
+        <strong>${profile.city}, ${profile.country}</strong>
     </h6>
     <h6 class="text-center">
-        <strong>Age:</strong> 27, <strong>Birthday: </strong> Feb 26, 1989
+        <strong>Age:</strong> ${profile.age}, <strong>Birthday: </strong> ${profile.birthDay}
     </h6>
     <div class="list-group contacts">
-        <a class="list-group-item" href="tel:+380507525137"><i class="fa fa-phone"></i> +380507525137</a>
-        <a class="list-group-item" href="mailto:richard-hendricks@gmail.com"><i class="fa fa-envelope"></i> richard-hendricks@gmail.com</a>
-        <a class="list-group-item" href="javascript:void(0);"><i class="fa fa-skype"></i>richard-hendricks</a>
-        <a target="_blank" class="list-group-item" href="https://vk.com/richard-hendricks"><i class="fa fa-vk"></i> https://vk.com/richard-hendricks</a>
-        <a target="_blank" class="list-group-item" href="https://facebook.com/richard-hendricks"><i class="fa fa-facebook"></i> https://facebook.com/richard-hendricks</a>
-        <a target="_blank" class="list-group-item" href="https://linkedin.com/richard-hendricks"><i class="fa fa-linkedin"></i> https://linkedin.com/richard-hendricks</a>
-        <a target="_blank" class="list-group-item" href="https://github.com/richard-hendricks"><i class="fa fa-github"></i> https://github.com/richard-hendricks</a>
-        <a target="_blank" class="list-group-item" href="https://stackoverflow.com/richard-hendricks"><i class="fa fa-stack-overflow"></i> https://stackoverflow.com/richard-hendricks</a>
+        <a class="list-group-item" href="tel:${profile.phone}"><i class="fa fa-phone"></i> ${profile.phone}</a>
+        <a class="list-group-item" href="mailto:${profile.email}"><i class="fa fa-envelope"></i> ${profile.email}</a>
+        <a class="${profile.contacts.skype == null?"hidden":"list-group-item"}" href="javascript:void(0);"><i
+                class="fa fa-skype"></i> ${profile.contacts.skype}</a>
+        <a target="_blank" class="${profile.contacts.vkontakte == null?"hidden":"list-group-item"} "
+           href="${profile.contacts.vkontakte}"><i
+                class="fa fa-vk"></i>${profile.contacts.vkontakte}</a>
+        <a target="_blank" class="list-group-item"
+           href="${profile.contacts.facebook!=null?profile.contacts.facebook:"не указан"}"><i
+                class="fa fa-facebook"></i>${profile.contacts.facebook!=null?profile.contacts.facebook:"не указан"}</a>
+        <a target="_blank" class="list-group-item"
+           href="${profile.contacts.linkedin!=null?profile.contacts.linkedin:"не указан"}"><i
+                class="fa fa-linkedin"></i>${profile.contacts.linkedin!=null?profile.contacts.linkedin:"не указан"}</a>
+        <a target="_blank" class="list-group-item"
+           href="${profile.contacts.github!=null?profile.contacts.github:"не указан"}"><i
+                class="fa fa-github"></i>${profile.contacts.github!=null?profile.contacts.github:"не указан"}</a>
+        <a target="_blank" class="list-group-item"
+           href="${profile.contacts.stackoverflow!=null?profile.contacts.stackoverflow:"не указан"}"><i
+                class="fa fa-stack-overflow"></i>${profile.contacts.stackoverflow!=null?profile.contacts.stackoverflow:"не указан"}
+        </a>
     </div>
 
 </div>

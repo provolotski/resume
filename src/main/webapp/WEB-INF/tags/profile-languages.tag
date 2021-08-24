@@ -1,5 +1,5 @@
-<%@ tag pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ tag pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 
 
 <div class="panel panel-primary">
@@ -9,6 +9,8 @@
         </h3>
     </div>
     <div class="panel-body">
-        <strong>English:</strong> Intermediate<br>
+           <c:forEach items="${profile.languages}" var="item">
+            <strong>${item.name}:</strong> ${item.level} (${item.type})<br>
+        </c:forEach>
     </div>
 </div>

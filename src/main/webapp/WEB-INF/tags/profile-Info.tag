@@ -7,5 +7,5 @@
             <i class="fa fa-info-circle"></i> Additional info <a class="edit-block" href="/edit/info">Edit</a>
         </h3>
     </div>
-    <div class="panel-body text-justify">Married, Two children</div>
+    <div class="panel-body text-justify">${profile.info}</div>
 </div>
