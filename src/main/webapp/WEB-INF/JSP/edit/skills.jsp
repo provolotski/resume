@@ -14,7 +14,7 @@
     <form:form action="/edit/skills" method="post" commandName="skillForm">
       <div id="ui-block-container">
         <c:forEach var="skill" items="${skillForm.items }" varStatus="status">
-          <resume:edit-skill-block index="${status.index}" skill="${skill }" />
+          <resume:edit-skill-block index="${status.index}" skill="${skill}" />
         </c:forEach>
       </div>
       <div class="row">

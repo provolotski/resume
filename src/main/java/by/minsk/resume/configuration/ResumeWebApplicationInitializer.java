@@ -1,11 +1,12 @@
 package by.minsk.resume.configuration;
 
+import java.util.EnumSet;
+
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import javax.servlet.SessionTrackingMode;
-import java.util.EnumSet;
 
 import org.sitemesh.builder.SiteMeshFilterBuilder;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
@@ -17,8 +18,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-
-
 import by.minsk.resume.filter.ResumeFilter;
 import by.minsk.resume.listener.ApplicationListener;
 
@@ -27,53 +26,51 @@ import by.minsk.resume.listener.ApplicationListener;
 
 public class ResumeWebApplicationInitializer implements WebApplicationInitializer {
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        WebApplicationContext context = createWebApplicationContext(servletContext);
+    public void onStartup(ServletContext container) throws ServletException {
+        WebApplicationContext ctx = createWebApplicationContext(container);
 
-        servletContext.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
-        servletContext.addListener(new ContextLoaderListener(context));
-        servletContext.addListener(context.getBean(ApplicationListener.class));
+        container.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
+        container.addListener(new ContextLoaderListener(ctx));
+        container.addListener(ctx.getBean(ApplicationListener.class));
 
-        registerFilters(servletContext, context);
-        registerSpringMVCDispatcherServlet(servletContext,context);
+        registerFilters(container, ctx);
+        registerSpringMVCDispatcherServlet(container, ctx);
     }
 
-    private  void registerSpringMVCDispatcherServlet(ServletContext context, WebApplicationContext applicationContext){
-        ServletRegistration.Dynamic servlet = context.addServlet("dispatcher", new DispatcherServlet(applicationContext));
+    private WebApplicationContext createWebApplicationContext(ServletContext container) {
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.scan("by.minsk.resume.configuration");
+        ctx.setServletContext(container);
+        ctx.refresh();
+        return ctx;
+    }
+
+    private void registerFilters(ServletContext container, WebApplicationContext ctx) {
+        registerFilter(container, ctx.getBean(ResumeFilter.class));
+        registerFilter(container, new CharacterEncodingFilter("UTF-8", true));
+        registerFilter(container, new OpenEntityManagerInViewFilter());
+        registerFilter(container, buildConfigurableSiteMeshFilter(), "sitemesh");
+    }
+
+    private void registerFilter(ServletContext container, Filter filter, String... filterNames) {
+        String filterName = filterNames.length > 0 ? filterNames[0] : filter.getClass().getSimpleName();
+        container.addFilter(filterName, filter).addMappingForUrlPatterns(null, true, "/*");
+    }
+
+    private  void registerSpringMVCDispatcherServlet(ServletContext container, WebApplicationContext ctx) {
+        ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
     }
 
-
-    private WebApplicationContext createWebApplicationContext(ServletContext context) {
-        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-        applicationContext.scan("by.minsk.resume.configuration");
-        applicationContext.setServletContext(context);
-        applicationContext.refresh();
-        return applicationContext;
-    }
-
-    private void registerFilter(ServletContext context, Filter filter, String... filterNames) {
-        String filterName = filterNames.length > 0 ? filterNames[0] : filter.getClass().getSimpleName();
-        context.addFilter(filterName, filter).addMappingForUrlPatterns(null, true, "/*");
-    }
-
-    private void registerFilters(ServletContext context, WebApplicationContext applicationContext) {
-        registerFilter(context,new OpenEntityManagerInViewFilter());
-        registerFilter(context, applicationContext.getBean(ResumeFilter.class));  // change
-        registerFilter(context, new CharacterEncodingFilter("UTF-8", true));
-        registerFilter(context,buildConfigurableSiteMeshFilter(),"sitemesh");
-    }
-
-    private ConfigurableSiteMeshFilter buildConfigurableSiteMeshFilter(){
-
-        return new ConfigurableSiteMeshFilter(){
+    private ConfigurableSiteMeshFilter buildConfigurableSiteMeshFilter() {
+        return new ConfigurableSiteMeshFilter() {
             @Override
-            protected void applyCustomConfiguration(SiteMeshFilterBuilder builder){
-                builder.addDecoratorPath("/*","/WEB-INF/template/page-template.jsp");
+            protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
+                builder
+                        .addDecoratorPath("/*", "/WEB-INF/template/page-template.jsp")
+                        .addDecoratorPath("/fragment/*", "/WEB-INF/template/fragment-template.jsp");
             }
         };
     }
-
-
 }

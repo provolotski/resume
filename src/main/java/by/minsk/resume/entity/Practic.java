@@ -1,6 +1,9 @@
 package by.minsk.resume.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +12,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "practic")
 public class Practic extends AbstractFinishDateEntity<Long> implements Serializable, ProfileEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRACTIC_ID_GENERATOR")
     @SequenceGenerator(name = "PRACTIC_ID_GENERATOR", sequenceName = "PRACTIC_SEQ", allocationSize = 1)
@@ -42,6 +46,7 @@ public class Practic extends AbstractFinishDateEntity<Long> implements Serializa
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profile", nullable = false)
+    @JsonIgnore
     private Profile profile;
 
     public Practic() {

@@ -2,11 +2,13 @@ package by.minsk.resume.form;
 
 import by.minsk.resume.entity.Skill;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SkillForm implements Serializable {
+    @Valid
     private List<Skill> items = new ArrayList<>();
 
     public SkillForm() {

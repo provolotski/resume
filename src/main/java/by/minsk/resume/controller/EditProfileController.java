@@ -1,55 +1,48 @@
 package by.minsk.resume.controller;
 
+import javax.validation.Valid;
 
 
-import by.minsk.resume.form.SkillForm;
-import by.minsk.resume.repository.storage.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-
-import by.minsk.resume.repository.storage.SkillCategoryRepository;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import by.minsk.resume.form.SkillForm;
+import by.minsk.resume.service.EditProfileService;
+import by.minsk.resume.util.SecurityUtil;
+
 @Controller
 public class EditProfileController {
 
     @Autowired
-    private SkillCategoryRepository skillCategoryRepository;
+    private EditProfileService editProfileService;
 
-    @Autowired
-    private ProfileRepository profileRepository;
-
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    @RequestMapping(value="/edit", method=RequestMethod.GET)
     public String getEditProfile(){
         return "edit";
     }
 
-
-    @RequestMapping(value = "/edit/skills",method = RequestMethod.GET)
-    public String getEditTechSkills(Model model){
-        model.addAttribute("skillForm",new SkillForm(profileRepository.findOne(1L).getSkills()));
+    @RequestMapping(value = "/edit/skills", method = RequestMethod.GET)
+    public String getEditSkills(Model model) {
+        model.addAttribute("skillForm", new SkillForm(editProfileService.listSkills(SecurityUtil.getCurrentIdProfile())));
         return gotoSkillsJSP(model);
     }
+
     @RequestMapping(value = "/edit/skills", method = RequestMethod.POST)
-    public String saveEditTechSkills(@ModelAttribute("skillForm") SkillForm form, BindingResult bindingResult, Model model) {
+    public String saveEditSkills(@Valid @ModelAttribute("skillForm") SkillForm form, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return gotoSkillsJSP(model);
         }
-        //TODO Update skills
+        editProfileService.updateSkills(SecurityUtil.getCurrentIdProfile(), form.getItems());
         return "redirect:/mike-ross";
     }
 
-    private String gotoSkillsJSP(Model model) {
-        model.addAttribute("skillCategories", skillCategoryRepository.findAll(new Sort("id")));
-        return "/edit/skills";
+    private String gotoSkillsJSP(Model model){
+        model.addAttribute("skillCategories", editProfileService.listSkillCategories());
+        return "edit/skills";
     }
-
-
 }

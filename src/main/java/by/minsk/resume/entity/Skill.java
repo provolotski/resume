@@ -1,6 +1,10 @@
 package by.minsk.resume.entity;
 
+import by.minsk.resume.annotation.constraints.EnglishLanguage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -13,13 +17,18 @@ public class Skill extends AbstractEntity<Long> implements Serializable, Profile
     private Long id;
 
     @Column(name = "category", nullable = false)
+    @EnglishLanguage
+    @Size(min = 1)
     private String category;
 
     @Column(name = "value", nullable = false)
+    @EnglishLanguage
+    @Size(min = 1)
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profile", nullable = false)
+    @JsonIgnore
     private Profile profile;
 
     public Skill() {

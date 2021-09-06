@@ -20,16 +20,16 @@
         <a target="_blank" class="${profile.contacts.vkontakte == null?"hidden":"list-group-item"} "
            href="${profile.contacts.vkontakte}"><i
                 class="fa fa-vk"></i>${profile.contacts.vkontakte}</a>
-        <a target="_blank" class="list-group-item"
+        <a target="_blank" class="${profile.contacts.facebook == null?"hidden":"list-group-item"}"
            href="${profile.contacts.facebook!=null?profile.contacts.facebook:"не указан"}"><i
                 class="fa fa-facebook"></i>${profile.contacts.facebook!=null?profile.contacts.facebook:"не указан"}</a>
-        <a target="_blank" class="list-group-item"
+        <a target="_blank" class="${profile.contacts.linkedin == null?"hidden":"list-group-item"}"
            href="${profile.contacts.linkedin!=null?profile.contacts.linkedin:"не указан"}"><i
                 class="fa fa-linkedin"></i>${profile.contacts.linkedin!=null?profile.contacts.linkedin:"не указан"}</a>
-        <a target="_blank" class="list-group-item"
+        <a target="_blank" class="${profile.contacts.github == null?"hidden":"list-group-item"}"
            href="${profile.contacts.github!=null?profile.contacts.github:"не указан"}"><i
                 class="fa fa-github"></i>${profile.contacts.github!=null?profile.contacts.github:"не указан"}</a>
-        <a target="_blank" class="list-group-item"
+        <a target="_blank" class="${profile.contacts.stackoverflow == null?"hidden":"list-group-item"}"
            href="${profile.contacts.stackoverflow!=null?profile.contacts.stackoverflow:"не указан"}"><i
                 class="fa fa-stack-overflow"></i>${profile.contacts.stackoverflow!=null?profile.contacts.stackoverflow:"не указан"}
         </a>

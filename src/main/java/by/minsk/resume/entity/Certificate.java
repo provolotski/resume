@@ -1,5 +1,7 @@
 package by.minsk.resume.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -60,6 +62,7 @@ public class Certificate extends AbstractEntity<Long> implements Serializable,Pr
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profile", nullable = false)
+    @JsonIgnore
     private Profile profile;
 
     public Profile getProfile() {

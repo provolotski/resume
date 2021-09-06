@@ -2,6 +2,7 @@ package by.minsk.resume.entity;
 
 import by.minsk.resume.model.LanguageLevel;
 import by.minsk.resume.model.LanguageType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public class Language extends AbstractEntity<Long> implements Serializable, Prof
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profile", nullable = false)
+    @JsonIgnore
     private Profile profile;
 
     public Language() {
