@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form"   	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="resume" 	tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="panel panel-default">
   <div class="panel-body">
@@ -12,6 +13,7 @@
       <div class="col-xs-7 col-sm-8 col-md-10 text-center"><strong>Фреймворк и технология</strong></div>
     </div>
     <form:form action="/edit/skills" method="post" commandName="skillForm">
+      <sec:csrfInput/>
       <div id="ui-block-container">
         <c:forEach var="skill" items="${skillForm.items }" varStatus="status">
           <resume:edit-skill-block index="${status.index}" skill="${skill}" />

@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface ProfileSearchRepository extends ElasticsearchRepository<Profile,Long> {
 
-    Page<Profile> findByObjectiveLikeOrSummaryLikeOrPracticsCompanyLikeOrPracticsPositionLike(
-            String objective, String summary, String practicsCompany,String practicPosition, Pageable pageable);
+    Page<Profile> findByObjectiveLikeOrSummaryLikeOrInfoOrPracticsCompanyLikeOrPracticsPositionLike(
+            String objective, String summary, String info, String practicsCompany,String practicPosition, Pageable pageable);
 
 }

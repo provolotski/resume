@@ -31,3 +31,6 @@
 /.jpb/
 /src/main/webapp/media/
 
+/src/main/webapp/media/
+/src/main/webapp/media/avatar/
+/src/main/webapp/media/certificates/
