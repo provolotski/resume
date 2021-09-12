@@ -1,13 +1,7 @@
 package by.minsk.resume.configuration;
 
-import java.util.EnumSet;
-
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.SessionTrackingMode;
-
+import by.minsk.resume.component.impl.ApplicationListener;
+import by.minsk.resume.filter.ResumeFilter;
 import org.sitemesh.builder.SiteMeshFilterBuilder;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
@@ -20,8 +14,8 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import by.minsk.resume.filter.ResumeFilter;
-import by.minsk.resume.listener.ApplicationListener;
+import javax.servlet.*;
+import java.util.EnumSet;
 
 
 

@@ -1,0 +1,17 @@
+<configuration>
+    <property name="LOG_DIR" value="/home/kpss/Work/Java/resume/logs" />
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/resume.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="by.minsk.resume" level="DEBUG"/>
+
+    <root level="WARN">
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

@@ -1,7 +1,5 @@
 package by.minsk.resume.configuration;
 
-import java.io.IOException;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -9,13 +7,16 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
+
 
 
 @Configuration
 @ComponentScan({ "by.minsk.resume.service.impl",
-        "by.minsk.resume.controller",
+   //     "by.minsk.resume.controller",
         "by.minsk.resume.filter",
-        "by.minsk.resume.listener"})
+     //   "by.minsk.resume.listener",
+        "by.minsk.resume.component.impl"})
 public class ServiceConfig {
     @Bean
       public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() throws IOException {

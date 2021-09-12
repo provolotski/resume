@@ -13,14 +13,14 @@ import java.util.UUID;
 public final class SecurityUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityUtil.class);
 
-    public static CurrentProfile  getCurrentProfile(){
+    public static CurrentProfile getCurrentProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null) {
+        if (authentication == null) {
             return null;
         }
         Object principal = authentication.getPrincipal();
         if (principal instanceof CurrentProfile) {
-            return ((CurrentProfile)principal);
+            return ((CurrentProfile) principal);
         } else {
             return null;
         }
@@ -28,11 +28,12 @@ public final class SecurityUtil {
 
     public static Long getCurrentIdProfile() {
         CurrentProfile currentProfile = getCurrentProfile();
+        LOGGER.warn("current id for edit is: " + currentProfile.getId());
         return currentProfile != null ? currentProfile.getId() : null;
     }
+
     public static void authentificate(Profile profile) {
         CurrentProfile currentProfile = new CurrentProfile(profile);
-        LOGGER.info("KPSS password is" + currentProfile.getPassword());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 currentProfile, currentProfile.getPassword(), currentProfile.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -42,11 +43,11 @@ public final class SecurityUtil {
         return getCurrentProfile() != null;
     }
 
-    public static String generateNewActionUid(){
+    public static String generateNewActionUid() {
         return UUID.randomUUID().toString();
     }
 
-    public static String generateNewRestoreAccessToken(){
+    public static String generateNewRestoreAccessToken() {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
